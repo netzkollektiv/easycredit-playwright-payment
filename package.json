@@ -1,0 +1,19 @@
+{
+  "name": "easycredit-playwright-payment",
+  "version": "1.0.0",
+  "description": "Shared Playwright helpers for the easyCredit hosted payment page, via the page UI or the payment API.",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "@playwright/test": ">=1.40.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netzkollektiv/easycredit-playwright-payment.git"
+  }
+}
