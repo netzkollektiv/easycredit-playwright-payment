@@ -5,7 +5,12 @@ Playwright helpers for the easyCredit hosted payment page (`ratenkauf.easycredit
 `goThroughPaymentPage` drives the hosted UI. Set `EASYCREDIT_PAYMENT_API=true` (or pass `viaApi: true`) to complete the same page through the payment API with in-page requests, so the shop session cookies stay attached.
 
 ```js
-const { goThroughPaymentPage } = require("easycredit-playwright-payment");
+const { createEasyCreditPayment } = require("easycredit-playwright-payment");
+
+const { goThroughPaymentPage } = createEasyCreditPayment({
+  // Where this shop lands after the hosted payment page.
+  returnUrlPattern: /easycredit\/checkout\/review/i,
+});
 
 await goThroughPaymentPage({
   page,

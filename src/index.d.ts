@@ -29,14 +29,21 @@ export interface PaymentPageOptions {
   switchPaymentType?: boolean;
   /** Use the payment API instead of the hosted UI. Defaults to EASYCREDIT_PAYMENT_API. */
   viaApi?: boolean;
-  /**
-   * Runs before the API flow waits for the hosted page.
-   * WooCommerce uses this to fail fast when checkout never redirects.
-   */
+  /** Runs before the API flow waits for the hosted page. */
   preparePage?: (page: Page) => Promise<void>;
-  /** URL matched after the shop return. Default covers Magento review, Shopware confirm, and WooCommerce order-received. */
+  /** Shop URL that means the payment return finished. Each plugin supplies its own. */
+  returnUrlPattern?: RegExp | string;
+  /** Used when the payment response does not include a success URL. */
+  fallbackReturnUrl?: string;
+}
+
+export interface EasyCreditPaymentDefaults {
   returnUrlPattern?: RegExp | string;
   fallbackReturnUrl?: string;
+  preparePage?: (page: Page) => Promise<void>;
+  express?: boolean;
+  switchPaymentType?: boolean;
+  viaApi?: boolean;
 }
 
 export function shouldUsePaymentApi(explicit?: boolean): boolean;
@@ -44,3 +51,7 @@ export function resolvePaymentPageMode(viaApi?: boolean): PaymentPageMode;
 export function extractTechnicalTransactionId(url: string): string | null;
 export function goThroughPaymentPageViaApi(options: PaymentPageOptions): Promise<void>;
 export function goThroughPaymentPage(options: PaymentPageOptions): Promise<void>;
+export function createEasyCreditPayment(defaults?: EasyCreditPaymentDefaults): {
+  goThroughPaymentPage: (options: PaymentPageOptions) => Promise<void>;
+  goThroughPaymentPageViaApi: (options: PaymentPageOptions) => Promise<void>;
+};

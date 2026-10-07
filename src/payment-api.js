@@ -20,9 +20,6 @@ const PAYMENT_SANDBOX = {
   netIncome: "1750",
 };
 
-const DEFAULT_RETURN_URL_PATTERN =
-  /easycredit\/.*return|easycredit\/checkout\/review|checkout\/confirm|order-received/i;
-
 function shouldUsePaymentApi(explicit) {
   if (explicit !== undefined) {
     return explicit;
@@ -274,8 +271,8 @@ async function goThroughPaymentPageViaApi({
   paymentType,
   express = false,
   preparePage,
-  returnUrlPattern = DEFAULT_RETURN_URL_PATTERN,
-  fallbackReturnUrl = "/easycredit/return",
+  returnUrlPattern,
+  fallbackReturnUrl,
 }) {
   if (typeof preparePage === "function") {
     await preparePage(page);
@@ -507,8 +504,15 @@ async function goThroughPaymentPageViaApi({
   );
 
   const returnUrl = vorgang.ruecksprungAdressen?.erfolgUrl ?? fallbackReturnUrl;
+  if (!returnUrl) {
+    throw new Error(
+      "Payment response has no success URL. Pass fallbackReturnUrl when creating the payment helper."
+    );
+  }
   await page.goto(returnUrl);
-  await page.waitForURL(returnUrlPattern, { timeout: 90000 });
+  if (returnUrlPattern) {
+    await page.waitForURL(returnUrlPattern, { timeout: 90000 });
+  }
 
   await expect(page).not.toHaveURL(/ratenkauf\.easycredit\.de/i);
 }
