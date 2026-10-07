@@ -21,7 +21,7 @@ const PAYMENT_SANDBOX = {
 };
 
 const DEFAULT_RETURN_URL_PATTERN =
-  /easycredit\/.*return|checkout\/confirm|order-received/i;
+  /easycredit\/.*return|easycredit\/checkout\/review|checkout\/confirm|order-received/i;
 
 function shouldUsePaymentApi(explicit) {
   if (explicit !== undefined) {

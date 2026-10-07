@@ -34,7 +34,7 @@ export interface PaymentPageOptions {
    * WooCommerce uses this to fail fast when checkout never redirects.
    */
   preparePage?: (page: Page) => Promise<void>;
-  /** URL matched after the shop return. Default covers Magento, Shopware, and WooCommerce. */
+  /** URL matched after the shop return. Default covers Magento review, Shopware confirm, and WooCommerce order-received. */
   returnUrlPattern?: RegExp | string;
   fallbackReturnUrl?: string;
 }
